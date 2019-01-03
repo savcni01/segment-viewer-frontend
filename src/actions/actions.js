@@ -1,8 +1,7 @@
 import * as types from './actionTypes';
-
-function url() {
-    return 'www.url.com';
-}
+const api = `http://localhost:8061`;
+const segments = `segments`;
+const volumes = `segments/volumes`;
 
 export function receiveStuff(json) {
     return {type: types.RECEIVE_STUFF, stuff: json.stuff};
@@ -10,11 +9,12 @@ export function receiveStuff(json) {
 
 export function fetchSegmentNames() {
     return dispatch => {
-        return fetch(url(), {
+        return fetch(`${api}/${segments}`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Accept': 'application/json'
             }
         })
@@ -24,11 +24,12 @@ export function fetchSegmentNames() {
 }
 export function fetchSegmentVolumes() {
     return dispatch => {
-        return fetch(url(), {
+        return fetch(`${api}/${volumes}`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Accept': 'application/json'
             }
         })

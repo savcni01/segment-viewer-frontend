@@ -10,6 +10,11 @@ export default class Table extends Component {
       Header: "Name",
       accessor: "name",
       width: 400,
+      filterable: true,
+      filterMethod: (filter, row) =>
+        String(row[filter.id])
+          .toLocaleLowerCase()
+          .startsWith(filter.value.toLocaleLowerCase()),
       Cell: row => (
         <div
           style={{
@@ -103,8 +108,11 @@ export default class Table extends Component {
           data={this.props.segments}
           columns={this.columns}
           showPagination={false}
-          filterable={true}
           loading={this.props.isLoading}
+          defaultFilterMethod={(filter, row) =>
+            String(row[filter.id]).toLocaleLowerCase() ===
+            filter.value.toLocaleLowerCase()
+          }
         />
       </div>
     );

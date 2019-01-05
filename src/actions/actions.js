@@ -14,19 +14,15 @@ const headers = {
 };
 
 const fetchSegmentNames = () => {
-  return new Promise(resolve => {
-    fetch(`${api}/${segments}`, headers)
-      .then(response => response.json())
-      .then(json => resolve(json));
-  });
+  return fetch(`${api}/${segments}`, headers)
+    .then(response => response.json())
+    .then(names => names);
 };
 
 const fetchSegmentVolumes = () => {
-  return new Promise(resolve => {
-    fetch(`${api}/${volumes}`, headers)
-      .then(response => response.json())
-      .then(json => resolve(json));
-  });
+  return fetch(`${api}/${volumes}`, headers)
+    .then(response => response.json())
+    .then(volumes => volumes);
 };
 
 const getAllPromises = async () => {

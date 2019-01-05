@@ -1,18 +1,25 @@
-import {FETCH_SEGMENT_NAMES, FETCH_SEGMENT_VOLUMES} from '../actions/actionTypes';
+import * as TYPE from "../actions/actionTypes";
 
-export const TABLE_REDUCER = 'tableReducer'
+export const TABLE_REDUCER = "tableReducer";
 export const initialState = {
-}
+  segments: [],
+  isLoading: false,
+  isError: false
+};
 
 export default function tableReducer(state = initialState, action) {
-    switch(action.type) {
-        case FETCH_SEGMENT_NAMES:
-            console.log('FETCH_SEGMENT_NAMES action')
-            return state
-        case FETCH_SEGMENT_VOLUMES:
-            console.log('FETCH_SEGMENT_NAMES action')
-            return state
-        default:
-            return state
+  switch (action.type) {
+    case TYPE.FETCH_SEGMENTS: {
+      return Object.assign({}, state, {
+        segments: [...action.segments]
+      });
     }
+    case TYPE.LOADING_SEGMENTS: {
+      return Object.assign({}, state, {
+        isLoading: action.isLoading
+      });
+    }
+    default:
+      return state;
+  }
 }

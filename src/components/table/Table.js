@@ -24,7 +24,7 @@ export default class Table extends Component {
     {
       Header: "Volume",
       accessor: "volumes",
-      width: 400,
+      width: 200,
       Cell: row => (
         <div
           style={{
@@ -47,34 +47,42 @@ export default class Table extends Component {
               {row.value ? nFormatter(row.value, 1) : "N/A"}
             </span>
           </div>
+        </div>
+      )
+    },
+    {
+      Header: "0 - 100%",
+      accessor: "percent",
+      width: 200,
+      Cell: row => (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#dadada",
+            borderRadius: "2px"
+          }}
+        >
           <div
             style={{
-              width: "80%",
+              width: `${row.value}%`,
               height: "100%",
-              float: "left",
-              backgroundColor: "#dadada",
-              borderRadius: "2px"
+              backgroundColor: this.getVolumePercentColor(row.value),
+              borderRadius: "2px",
+              transition: "all .2s ease-out"
             }}
-          >
-            <div
-              style={{
-                width: `${row.value}%`,
-                height: "100%",
-                backgroundColor:
-                  row.value > 66
-                    ? "#85cc00"
-                    : row.value > 33
-                    ? "#ffbf00"
-                    : "#ff2e00",
-                borderRadius: "2px",
-                transition: "all .2s ease-out"
-              }}
-            />
-          </div>
+          />
         </div>
       )
     }
   ];
+
+  getVolumePercentColor(percent) {
+    const green = "#85cc00";
+    const yellow = "#ffbf00";
+    const red = "#ff2e00";
+    return percent > 50 ? green : percent > 3 ? yellow : red;
+  }
 
   componentDidMount() {
     this.props.fetchSegments();

@@ -1,4 +1,5 @@
 import * as TYPE from "./actionTypes";
+import { rangeToPercent } from "../utils/format";
 
 const api = `http://localhost:8061`;
 const segments = `segments`;
@@ -32,11 +33,25 @@ const getAllPromises = async () => {
   try {
     const names = await fetchSegmentNames();
     const volumes = await fetchSegmentVolumes();
+    const v = volumes.map(v => v.segmentCode.volumes);
+
+    const minVolume = Math.min(...v);
+    const maxVolume = Math.max(...v);
 
     return names.map((s, index) => {
       let volume = volumes[index].segmentCode;
       return s.code === volume.code
-        ? { ...s, ...{ volumes: volume.volumes } }
+        ? {
+            ...s,
+            ...{ volumes: volume.volumes },
+            ...{
+              percent: rangeToPercent(
+                Math.round(volume.volumes),
+                minVolume,
+                maxVolume
+              )
+            }
+          }
         : s;
     });
   } catch (error) {

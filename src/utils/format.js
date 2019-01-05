@@ -17,3 +17,7 @@ export function nFormatter(num, digits) {
   }
   return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 }
+
+export function rangeToPercent(number, min, max) {
+  return Math.round(((number - min) / (max - min)) * 100);
+}

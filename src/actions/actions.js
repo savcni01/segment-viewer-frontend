@@ -15,20 +15,47 @@ const headers = {
 
 const fetchSegmentNames = () => {
   return fetch(`${api}/${segments}`, headers)
-    .then(response => response.json())
-    .then(names => names);
+    .then(response => {
+      if (response.status === 200) {
+        return response.ok ? response.json() : response;
+      } else {
+        throw new Error(response.statusText);
+      }
+    })
+    .then(names => names)
+    .catch(error =>
+      console.log(
+        "[Nielsen][Segment] Error on fetchSegmentNames: ",
+        error.message
+      )
+    );
 };
 
 const fetchSegmentVolumes = () => {
   return fetch(`${api}/${volumes}`, headers)
-    .then(response => response.json())
-    .then(volumes => volumes);
+    .then(response => {
+      if (response.status === 200) {
+        return response.ok ? response.json() : response;
+      } else {
+        throw new Error(response.statusText);
+      }
+    })
+    .then(volumes => volumes)
+    .catch(error =>
+      console.log(
+        "[Nielsen][Segment] Error on fetchSegmentVolumes: ",
+        error.message
+      )
+    );
 };
 
 const getAllPromises = async () => {
   try {
     const names = await fetchSegmentNames();
     const volumes = await fetchSegmentVolumes();
+
+    if (!names || !names.length || !volumes || !volumes.length) return [];
+
     const v = volumes.map(v => v.segmentCode.volumes);
 
     const minVolume = Math.min(...v);
